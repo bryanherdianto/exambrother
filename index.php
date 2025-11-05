@@ -7,8 +7,8 @@ $context = context_system::instance();
 
 $PAGE->set_context($context);
 $PAGE->set_url(new moodle_url('/local/myplugin/index.php'));
-$PAGE->set_title(get_string('exammonitor', 'local_myplugin'));
-$PAGE->set_heading(get_string('exammonitor', 'local_myplugin'));
+$PAGE->set_title(get_string('exambrother', 'local_myplugin'));
+$PAGE->set_heading(get_string('exambrother', 'local_myplugin'));
 $PAGE->set_pagelayout('standard');
 
 // Add CSS
@@ -28,14 +28,13 @@ $canViewReports = has_capability('local/myplugin:viewreports', $context);
 <div class="exam-monitor-container">
     <div class="welcome-section">
         <h2><?php echo get_string('welcome', 'local_myplugin'); ?></h2>
-        <p>Welcome to the Exam Monitor system. This plugin provides comprehensive exam monitoring with real-time cheating detection.</p>
+        <p>Welcome to the Exam Brother system. This plugin provides comprehensive exam monitoring with real-time cheating detection.</p>
     </div>
 
     <div class="features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
         
         <?php if ($canTakeExam): ?>
         <div class="feature-card" style="background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div style="font-size: 48px; margin-bottom: 15px;">📝</div>
             <h3>Take Exam</h3>
             <p>Start a monitored exam session with camera tracking and cheating detection.</p>
             <a href="<?php echo new moodle_url('/local/myplugin/student_exam.php', ['examname' => 'Sample Exam']); ?>" 
@@ -47,7 +46,6 @@ $canViewReports = has_capability('local/myplugin:viewreports', $context);
 
         <?php if ($canMonitor): ?>
         <div class="feature-card" style="background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div style="font-size: 48px; margin-bottom: 15px;">👁️</div>
             <h3>Live Monitoring</h3>
             <p>Monitor active exam sessions in real-time and receive instant alerts.</p>
             <?php
@@ -63,7 +61,6 @@ $canViewReports = has_capability('local/myplugin:viewreports', $context);
 
         <?php if ($canViewReports): ?>
         <div class="feature-card" style="background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-            <div style="font-size: 48px; margin-bottom: 15px;">📊</div>
             <h3>Exam Reports</h3>
             <p>View detailed reports and screenshots from completed exam sessions.</p>
             <?php
@@ -78,19 +75,6 @@ $canViewReports = has_capability('local/myplugin:viewreports', $context);
             </a>
         </div>
         <?php endif; ?>
-    </div>
-
-    <!-- System Information -->
-    <div style="margin-top: 40px; padding: 25px; background: #f8f9fa; border-radius: 8px;">
-        <h3>System Features</h3>
-        <ul style="line-height: 2;">
-            <li>✅ Real-time camera monitoring with MediaPipe face detection</li>
-            <li>✅ Automatic cheating detection (looking left/right)</li>
-            <li>✅ Live proctor dashboard with auto-refresh</li>
-            <li>✅ Screenshot capture on cheating detection</li>
-            <li>✅ Post-exam reports with detailed timeline</li>
-            <li>✅ Alert notifications and history tracking</li>
-        </ul>
     </div>
 
     <!-- Recent Activity -->

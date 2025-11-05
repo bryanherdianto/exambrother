@@ -1,7 +1,7 @@
 <?php
-$string['pluginname'] = 'Exam Monitor';
-$string['welcome'] = 'Welcome to Exam Monitor!';
-$string['exammonitor'] = 'Exam Monitor';
+$string['pluginname'] = 'Exam Brother';
+$string['welcome'] = 'Welcome to Exam Brother!';
+$string['exambrother'] = 'Exam Brother';
 $string['studentexam'] = 'Take Exam';
 $string['proctordashboard'] = 'Proctor Dashboard';
 $string['liveproctor'] = 'Live Monitoring';

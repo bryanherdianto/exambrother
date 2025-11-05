@@ -79,6 +79,8 @@ if (!$activesession) {
                             <label><input type="radio" name="q1" value="3"> 3</label><br>
                             <label><input type="radio" name="q1" value="4"> 4</label><br>
                             <label><input type="radio" name="q1" value="5"> 5</label><br>
+                            <label><input type="radio" name="q1" value="6"> 6</label><br>
+                            <label><input type="radio" name="q1" value="7"> 7</label><br>
                         </div>
                     </div>
 
@@ -89,6 +91,8 @@ if (!$activesession) {
                             <label><input type="radio" name="q2" value="London"> London</label><br>
                             <label><input type="radio" name="q2" value="Paris"> Paris</label><br>
                             <label><input type="radio" name="q2" value="Berlin"> Berlin</label><br>
+                            <label><input type="radio" name="q2" value="Soto"> Soto</label><br>
+                            <label><input type="radio" name="q2" value="Indomie"> Indomie</label><br>
                         </div>
                     </div>
 
@@ -98,7 +102,6 @@ if (!$activesession) {
 
             <!-- Cheating Alert Display -->
             <div class="cheating-alert" id="cheating-alert" style="display: none;">
-                <div class="alert-icon">⚠️</div>
                 <div class="alert-message">
                     <strong><?php echo get_string('cheatingdetected', 'local_myplugin'); ?></strong>
                     <p id="alert-description">Please look at your screen.</p>
