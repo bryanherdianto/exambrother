@@ -31,3 +31,4 @@ $string['screenshot'] = 'Screenshot';
 $string['local/myplugin:takeexam'] = 'Take monitored exams';
 $string['local/myplugin:monitor'] = 'Monitor exams in real-time';
 $string['local/myplugin:viewreports'] = 'View exam monitoring reports';
+$string['invalidaction'] = 'Invalid action parameter';

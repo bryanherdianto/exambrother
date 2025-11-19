@@ -22,6 +22,15 @@ global $DB;
 // Get all active exam sessions
 $activesessions = $DB->get_records('local_myplugin_sessions', ['status' => 'active'], 'starttime DESC');
 
+// Get recent global alerts
+$globalalerts = $DB->get_records_sql(
+    "SELECT a.*, u.firstname, u.lastname 
+     FROM {local_myplugin_alerts} a
+     JOIN {user} u ON a.userid = u.id
+     ORDER BY a.timecreated DESC
+     LIMIT 10"
+);
+
 ?>
 
 <div class="proctor-dashboard">
@@ -96,8 +105,11 @@ $activesessions = $DB->get_records('local_myplugin_sessions', ['status' => 'acti
                                     <div class="alert-item">
                                         <span class="alert-icon">⚠️</span>
                                         <div class="alert-content">
-                                            <span class="alert-type"><?php echo ucwords(str_replace('_', ' ', $alert->alerttype)); ?></span>
-                                            <span class="alert-time"><?php echo userdate($alert->timecreated, '%H:%M:%S'); ?></span>
+                                            <div class="d-flex justify-content-between">
+                                                <span class="alert-type font-weight-bold"><?php echo ucwords(str_replace('_', ' ', $alert->alerttype)); ?></span>
+                                                <span class="alert-time small text-muted"><?php echo userdate($alert->timecreated, '%H:%M:%S'); ?></span>
+                                            </div>
+                                            <div class="alert-desc small text-danger"><?php echo $alert->description; ?></div>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -124,7 +136,17 @@ $activesessions = $DB->get_records('local_myplugin_sessions', ['status' => 'acti
     <div class="realtime-alerts-section">
         <h3><?php echo get_string('realtimealerts', 'local_myplugin'); ?></h3>
         <div class="alert-feed" id="alert-feed">
-            <p class="no-alerts-text">Waiting for alerts...</p>
+            <?php if (empty($globalalerts)): ?>
+                <p class="no-alerts-text">No alerts yet</p>
+            <?php else: ?>
+                <?php foreach ($globalalerts as $alert): ?>
+                    <div class="alert-feed-item" style="padding: 10px; border-bottom: 1px solid #eee;">
+                        <span class="time badge badge-secondary"><?php echo userdate($alert->timecreated, '%H:%M:%S'); ?></span>
+                        <strong><?php echo fullname($alert); ?></strong>:
+                        <span class="text-danger"><?php echo $alert->description; ?></span>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 </div>
@@ -166,6 +188,12 @@ function refreshDashboard() {
             if (newSessions && oldSessions) {
                 oldSessions.innerHTML = newSessions.innerHTML;
                 setupEventListeners();
+            }
+
+            const newAlerts = doc.querySelector('#alert-feed');
+            const oldAlerts = document.querySelector('#alert-feed');
+            if (newAlerts && oldAlerts) {
+                oldAlerts.innerHTML = newAlerts.innerHTML;
             }
             
             document.getElementById('last-update-time').textContent = 
@@ -221,17 +249,20 @@ function setupEventListeners() {
 
 function endSession(sessionId) {
     // In production, this would call an AJAX endpoint
-    fetch('<?php echo $CFG->wwwroot; ?>/local/myplugin/ajax/end_session.php', {
+    const formData = new FormData();
+    formData.append('action', 'end_session');
+    formData.append('sessionid', sessionId);
+
+    fetch('<?php echo $CFG->wwwroot; ?>/local/myplugin/ajax/api.php', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ sessionid: sessionId })
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
             refreshDashboard();
+        } else {
+            alert('Error: ' + data.message);
         }
     })
     .catch(error => {
