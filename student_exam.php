@@ -120,7 +120,7 @@ if (!$activesession) {
                     <h3><?php echo htmlspecialchars($examname); ?></h3>
                     
                     <div id="exam-content-area" style="display:none;">
-                        <form method="post" action="student_exam.php">
+                        <form id="exam-form" method="post" action="student_exam.php">
                             <input type="hidden" name="examid" value="<?php echo $examid; ?>">
                             <input type="hidden" name="sesskey" value="<?php echo sesskey(); ?>">
                             <input type="hidden" name="action" value="submit">
@@ -339,6 +339,44 @@ if (!$activesession) {
 
         window.requestAnimationFrame(predictWebcam);
     }
+
+    let tabSwitchCount = 0;
+    const MAX_SWITCHES = 3;
+
+    document.addEventListener("visibilitychange", () => {
+        // We only care if the page becomes HIDDEN (user left)
+        if (document.hidden) {
+            tabSwitchCount++;
+            const remaining = MAX_SWITCHES - tabSwitchCount;
+            
+            // 1. Trigger the visual alert (Re-using your existing function)
+            // This ensures they see the warning immediately when they return.
+            const msg = `TAB SWITCH DETECTED! (${tabSwitchCount}/${MAX_SWITCHES})`;
+            triggerAlert(msg, 'tab_switch'); 
+
+            // 2. Check if limit reached
+            if (tabSwitchCount >= MAX_SWITCHES) {
+                // UI Feedback: Lock everything down
+                statusDiv.style.color = 'red';
+                statusDiv.innerText = "VIOLATION LIMIT REACHED. SUBMITTING EXAM...";
+                
+                // Force the alert to stay visible
+                const alertBox = document.getElementById("cheating-alert");
+                alertBox.classList.add("active-alert");
+                alertBox.querySelector('h3').innerText = "EXAM TERMINATED";
+                document.getElementById("alert-description").innerText = "Maximum tab switches allowed.";
+
+                // 3. Auto-Submit the Form
+                const form = document.getElementById('exam-form');
+                if (form) {
+                    // Small delay (1.5s) so the user sees the "Terminated" message before redirect
+                    setTimeout(() => {
+                        form.submit();
+                    }, 1500);
+                }
+            }
+        }
+    });
 
     // 4. Sticky Alert System
     // message: text to show, alertType: optional string to send to server (e.g., 'head_pose' or 'no_face')
