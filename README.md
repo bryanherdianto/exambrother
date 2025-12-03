@@ -11,7 +11,6 @@
  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
  <img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white" />
- <img src="https://img.shields.io/badge/Canvas_API-FF6F00?style=for-the-badge&logo=html5&logoColor=white" />
 </p>
 
 ## Overview
@@ -33,8 +32,8 @@ A comprehensive Moodle plugin for online exam monitoring with real-time AI-power
 - **Face Detection**: Real-time face tracking using MediaPipe Face Landmarker
 - **Head Pose Analysis**: Detects when students look left, right, or away from screen
 - **Missing Face Detection**: Alerts when no face is visible (with 60-frame buffer to reduce false positives)
-- **Adjustable Sensitivity**: Lax detection thresholds (0.25) to minimize false alerts during normal movement
-- **Alert Cooldown**: 5-second cooldown between alerts to prevent spam
+- **Adjustable Sensitivity**: Lax detection thresholds (0.1) to minimize false alerts during normal movement
+- **Alert Cooldown**: Half second cooldown between alerts to prevent spam
 
 ### 3. Tab Switch Detection & Auto-Submit
 
